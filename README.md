@@ -4,7 +4,7 @@
 
 ### Usage
 
-`composer create-project mactape/isdayoff`
+`composer require mactape/isdayoff`
 
 ```
 IsDayOff::check()
