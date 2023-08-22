@@ -9,6 +9,6 @@ class IsDayOff extends \Illuminate\Support\Facades\Facade
 {
     protected static function getFacadeAccessor(): string
     {
-        return \Mactape\Api::class;
+        return \Mactape\IsDayOff\Api::class;
     }
 }
