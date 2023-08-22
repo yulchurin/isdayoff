@@ -1,0 +1,24 @@
+{
+    "name": "mactape/isdayoff",
+    "description": "Laravel rules for verifying the correctness of entered personal data",
+    "type": "project",
+    "license": "MIT",
+    "require": {
+        "php": "^8.0",
+        "guzzlehttp/guzzle": "^7.2",
+        "laravel/framework": "^10.9",
+        "nesbot/carbon": "^2.62.1"
+    },
+    "autoload": {
+        "psr-4": {
+            "Mactape\\IsDayOff\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Tayfur Yulchurin",
+            "email": "yulchurin@gmail.com"
+        }
+    ],
+    "minimum-stability": "stable"
+}
