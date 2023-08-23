@@ -71,13 +71,13 @@ class ApiCheck
             $code = $response->getBody()->getContents();
 
             if (in_array((int) $code, $this->errors)) {
-                Log::channel('api-day-off')->warning($this->responseCodes[$code]);
+                Log::warning('IsDayOff API: ' . $this->responseCodes[$code]);
                 return false;
             }
 
             return $code;
         } catch (GuzzleException $e) {
-            Log::channel('api-day-off')->error($e->getCode() . ' ' . $e->getMessage());
+            Log::error('IsDayOff API: ' .$e->getCode() . ' ' . $e->getMessage());
             return false;
         }
     }

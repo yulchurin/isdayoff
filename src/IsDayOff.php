@@ -5,7 +5,7 @@ namespace Mactape\IsDayOff;
 /**
  * @method static bool check(?\Carbon\CarbonInterface $date = null)
  */
-class Facade extends \Illuminate\Support\Facades\Facade
+class IsDayOff extends \Illuminate\Support\Facades\Facade
 {
     protected static function getFacadeAccessor(): string
     {

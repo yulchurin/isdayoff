@@ -22,11 +22,8 @@
     ],
     "extra": {
         "laravel": {
-            "providers": [
-                "Mactape\\IsDayOff\\ServiceProvider"
-            ],
             "aliases": {
-                "IsDayOff": "Mactape\\IsDayOff\\Facade"
+                "IsDayOff": "Mactape\\IsDayOff\\IsDayOff"
             }
         }
     },
