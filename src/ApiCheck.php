@@ -8,7 +8,7 @@ use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 
-class Api
+class ApiCheck
 {
     private string $uri = 'https://isdayoff.ru/api/getdata?';
 
