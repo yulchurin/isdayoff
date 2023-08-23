@@ -9,7 +9,7 @@ class ServiceProvider extends BaseServiceProvider
     public function register()
     {
         $this->mergeConfigFrom(
-            __DIR__.'/../config/logging.php', 'logging'
+            __DIR__.'/logging.php', 'logging'
         );
     }
 
