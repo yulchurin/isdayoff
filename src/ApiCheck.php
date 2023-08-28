@@ -5,7 +5,6 @@ namespace Mactape\IsDayOff;
 use Carbon\CarbonInterface;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 
 class ApiCheck
@@ -62,6 +61,9 @@ class ApiCheck
         return (bool) $file[$date->dayOfYear - 1];
     }
 
+    /**
+     * @throws ApiHttpException
+     */
     private function apiRequest(string $request): bool|string
     {
         $client = new Client;
@@ -71,14 +73,12 @@ class ApiCheck
             $code = $response->getBody()->getContents();
 
             if (in_array((int) $code, $this->errors)) {
-                Log::warning('IsDayOff API: ' . $this->responseCodes[$code]);
-                return false;
+                throw new ApiHttpException('IsDayOff API: ' . $this->responseCodes[$code]);
             }
 
             return $code;
         } catch (GuzzleException $e) {
-            Log::error('IsDayOff API: ' .$e->getCode() . ' ' . $e->getMessage());
-            return false;
+            throw new ApiHttpException('IsDayOff API: ' .$e->getCode() . ' ' . $e->getMessage());
         }
     }
 }
