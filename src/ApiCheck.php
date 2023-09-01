@@ -11,33 +11,30 @@ class ApiCheck
 {
     private string $uri = 'https://isdayoff.ru/api/getdata?';
 
+    /**
+     * @throws ApiHttpException
+     */
     public function check(?CarbonInterface $date = null): bool
     {
         $date = $date ?? now();
 
-        return $this->requestYearly($date);
+        $file = $this->getYearlyFile($date);
+
+        return $file[$date->dayOfYear - 1];
     }
 
-    private function requestYearly(CarbonInterface $date): bool
+    private function getYearlyFile(CarbonInterface $date): string
     {
         $year = $date->year;
         $filename = "day-off-$year.txt";
 
-        if (
-            ! Storage::exists($filename)
-            || Storage::size($filename) < 365
-        ) {
+        if (! Storage::exists($filename) || Storage::size($filename) < 365) {
             Storage::disk('local')->put($filename, $this->apiRequest("year=$year"));
         }
 
-        $file = Storage::get("day-off-$year.txt");
-
-        return (bool) $file[$date->dayOfYear - 1];
+        return Storage::get($filename);
     }
 
-    /**
-     * @throws ApiHttpException
-     */
     private function apiRequest(string $request): bool|string
     {
         $client = new Client;
