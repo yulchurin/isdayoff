@@ -2,49 +2,44 @@
 
 namespace Mactape\IsDayOff;
 
-use Carbon\CarbonInterface;
-use GuzzleHttp\Client;
-use GuzzleHttp\Exception\GuzzleException;
-use Illuminate\Support\Facades\Storage;
+use DateTimeInterface;
 
 class ApiCheck
 {
-    private string $uri = 'https://isdayoff.ru/api/getdata?';
-
-    /**
-     * @throws ApiHttpException
-     */
-    public function check(?CarbonInterface $date = null): bool
+    public function check(?DateTimeInterface $date = null): bool
     {
-        $date = $date ?? now();
+        $date = $date ?? new \DateTimeImmutable();
 
         $file = $this->getYearlyFile($date);
 
-        return $file[$date->dayOfYear - 1];
+        return $file[(int) $date->format('z')];
     }
 
-    private function getYearlyFile(CarbonInterface $date): string
+    private function getYearlyFile(DateTimeInterface $date): string
     {
-        $year = $date->year;
+        $year = $date->format('Y');
+
         $filename = "day-off-$year.txt";
 
-        if (! Storage::exists($filename) || Storage::size($filename) < 365) {
-            Storage::disk('local')->put($filename, $this->apiRequest("year=$year"));
+        $file = __DIR__ . "/storage/app/$filename";
+
+        $data = file_get_contents($file);
+
+        if (!$data || strlen($data) < 365) {
+            file_put_contents($file, $this->apiRequest($year));
         }
 
-        return Storage::get($filename);
+        return file_get_contents($file);
     }
 
-    private function apiRequest(string $request): bool|string
+    private function apiRequest(string $year): bool|string
     {
-        $client = new Client;
-
         try {
-            $response = $client->get("$this->uri$request");
-
-            return $response->getBody()->getContents();
-        } catch (GuzzleException $e) {
+            $response = file_get_contents("https://isdayoff.ru/api/getdata?year=$year");
+        } catch (\Exception $e) {
             throw new ApiHttpException('IsDayOff API: ' .$e->getCode() . ' ' . $e->getMessage());
         }
+
+        return $response;
     }
 }
