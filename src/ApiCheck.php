@@ -21,7 +21,7 @@ class ApiCheck
 
         $filename = "day-off-$year.txt";
 
-        $file = __DIR__ . "/storage/app/$filename";
+        $file = __DIR__ . "../../../../storage/app/$filename";
 
         $data = file_get_contents($file);
 
