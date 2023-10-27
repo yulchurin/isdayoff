@@ -21,11 +21,18 @@ class ApiCheck
 
         $filename = "day-off-$year.txt";
 
-        $file = __DIR__ . "/../../../../storage/app/$filename";
+        $sep = DIRECTORY_SEPARATOR;
+
+        $file = __DIR__ . "$sep..$sep..$sep..$sep.." . $sep. "storage$sep" . $sep . "app$sep$filename";
+
+        if (!file_exists($file)) {
+            file_put_contents($file, $this->apiRequest($year));
+        }
 
         $data = file_get_contents($file);
 
-        if (!$data || strlen($data) < 365) {
+        if (strlen($data) < 365) {
+            unlink($file);
             file_put_contents($file, $this->apiRequest($year));
         }
 
