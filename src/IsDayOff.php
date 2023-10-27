@@ -3,7 +3,7 @@
 namespace Mactape\IsDayOff;
 
 /**
- * @method static bool check(?\Carbon\CarbonInterface $date = null)
+ * @method static bool check(?\DateTimeInterface $date = null)
  */
 class IsDayOff extends \Illuminate\Support\Facades\Facade
 {
