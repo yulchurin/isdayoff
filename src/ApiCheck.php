@@ -6,9 +6,16 @@ use DateTimeInterface;
 
 class ApiCheck
 {
-    public function check(?DateTimeInterface $date = null): bool
+    /**
+     * @throws \Exception
+     */
+    public function check(DateTimeInterface|string|null $date = null): bool
     {
         $date = $date ?? new \DateTimeImmutable();
+
+        if (is_string($date)) {
+            $date = new \DateTimeImmutable($date);
+        }
 
         $file = $this->getYearlyFile($date);
 
