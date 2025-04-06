@@ -3,15 +3,16 @@
 namespace Mactape\IsDayOff;
 
 use DateTimeInterface;
+use Exception;
 
 class ApiCheck
 {
     /**
-     * @throws \Exception
+     * @throws Exception
      */
     public function check(DateTimeInterface|string|null $date = null): bool
     {
-        $date = $date ?? new \DateTimeImmutable();
+        $date = $date ?? new \DateTimeImmutable;
 
         if (is_string($date)) {
             $date = new \DateTimeImmutable($date);
@@ -20,6 +21,15 @@ class ApiCheck
         $file = $this->getYearlyFile($date);
 
         return $file[(int) $date->format('z')];
+    }
+
+    public function fileContent(?DateTimeInterface $date): string
+    {
+        if ($date === null) {
+            $date = now();
+        }
+
+        return $this->getYearlyFile($date);
     }
 
     private function getYearlyFile(DateTimeInterface $date): string
@@ -50,8 +60,8 @@ class ApiCheck
     {
         try {
             $response = file_get_contents("https://isdayoff.ru/api/getdata?year=$year");
-        } catch (\Exception $e) {
-            throw new ApiHttpException('IsDayOff API: ' .$e->getCode() . ' ' . $e->getMessage());
+        } catch (Exception $e) {
+            throw new ApiHttpException('IsDayOff API: '.$e->getCode().' '.$e->getMessage());
         }
 
         return $response;
