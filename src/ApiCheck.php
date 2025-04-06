@@ -23,7 +23,7 @@ class ApiCheck
         return $file[(int) $date->format('z')];
     }
 
-    public function fileContent(?DateTimeInterface $date): string
+    public function fileContent(?DateTimeInterface $date = null): string
     {
         if ($date === null) {
             $date = now();
